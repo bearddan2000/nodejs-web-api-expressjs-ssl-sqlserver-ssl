@@ -1,0 +1,21 @@
+version: "3.4"
+
+services:
+  web:
+    build: nodejs
+    ports:
+      - 80:3000
+      - 443:443
+    command: sh -c "/wait && node index.js"
+    environment:
+      - WAIT_HOSTS=db:1433
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+   
+  db:
+    build: db
+    ports:
+      - 1433
+    healthcheck:
+      test: "exit 0"
